@@ -26,12 +26,12 @@ const useStyles = makeStyles({
   },
 })
 
-const Characters = ({ characters }) => {
+const CharactersList = ({ characters }) => {
   console.log("Desde characters: ", characters)
   const classes = useStyles()
   return (
     <>
-      <Grid container alignItems="center" justify="center">
+      <Grid container alignItems="stretch" justify="center">
         {characters.map(character => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Card variant="outlined">
@@ -69,4 +69,4 @@ const Characters = ({ characters }) => {
   )
 }
 
-export default Characters
+export default CharactersList

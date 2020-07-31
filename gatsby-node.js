@@ -1,5 +1,21 @@
 const path = require("path")
 
+exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions
+
+  // Fetch your items (blog posts, categories, etc).
+  const charactersDetails = doSomeMagic()
+
+  // Create your paginated pages
+  paginate({
+    createPage, // The Gatsby `createPage` function
+    items: charactersDetails, // An array of objects
+    itemsPerPage: 12, // How many items you want per page
+    pathPrefix: "/characters", // Creates pages like `/blog`, `/blog/2`, etc
+    component: path.resolve("..."), // Just like `createPage()`
+  })
+}
+
 exports.createPages = async ({ graphql, actions }) => {
   //usamos el metodo createPage
   const { createPage } = actions
@@ -9,7 +25,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const result = await graphql(`
     query {
       RickAndMorty {
-        characters {
+        characters(page: 3) {
           results {
             id
             name
@@ -29,7 +45,9 @@ exports.createPages = async ({ graphql, actions }) => {
     throw result.errors
   }
   //si no hay erorres, traigo la data y hago un forEach por cada nodo
-  result.data.RickAndMorty.characters.results.forEach(character => {
+  const characters = result.data.RickAndMorty.characters.results
+
+  characters.forEach(character => {
     //createPage es un objeto con el path y el componente que lo resuelve
     createPage({
       path: `/${character.id}`,
